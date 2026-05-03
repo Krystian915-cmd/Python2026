@@ -1,0 +1,70 @@
+Lab7 - Python + Jupyter
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# ==========================================
+# Task 1: Wykres liniowy (Temperatura)
+# ==========================================
+x1 = [1, 3, 5, 7]
+y1 = [27, 30, 21, 29]
+
+plt.figure()
+plt.plot(x1, y1, color='green')
+plt.title('Temperature plot')
+plt.xlabel('day')
+plt.ylabel('temperature')
+plt.grid(True)
+plt.show()
+
+# ==========================================
+# Task 2: Wykres punktowy (Scatter plot)
+# ==========================================
+x2 = np.linspace(0, 5, 10)
+y2 = np.linspace(0, 25, 10)
+
+plt.figure()
+plt.scatter(x2, y2, color='red')
+plt.xlabel('X')
+plt.ylabel('Y')
+# Dodanie tekstu dla pierwszego i ostatniego punktu
+plt.text(x2[0], y2[0], f'({x2[0]},{y2[0]})')
+plt.text(x2[-1], y2[-1], f'({x2[-1]},{y2[-1]})')
+plt.show()
+
+# ==========================================
+# Task 3: Wykres kołowy (Filmy)
+# ==========================================
+labels_film = ['Action', 'Comedy', 'Drama', 'Sci-Fi']
+votes = [30, 45, 10, 15] # Przykładowe dane
+explode_film = [0, 0.1, 0, 0] # Wyciągnięcie "Comedy" jako najlepszego
+
+plt.figure()
+plt.pie(votes, labels=labels_film, explode=explode_film, shadow=True, autopct='%1.1f%%')
+plt.title('Favourite type of film')
+plt.show()
+
+# ==========================================
+# Task 4: Histogram i Bar plot obok siebie
+# ==========================================
+data = np.random.randn(10000)
+
+plt.figure(figsize=(12, 5))
+
+# 1. Histogram
+plt.subplot(1, 2, 1)
+plt.hist(data, bins=10, color='skyblue', edgecolor='black')
+plt.title('Histogram (10 bins)')
+
+# 2. Bar plot (na podstawie tych samych danych - zliczanie zakresów)
+plt.subplot(1, 2, 2)
+counts, bins = np.histogram(data, bins=10)
+# Tworzymy etykiety dla słupków na podstawie zakresów bins
+bin_labels = [f"{bins[i]:.1f}" for i in range(len(counts))]
+plt.bar(bin_labels, counts, color='salmon')
+plt.title('Bar plot (10 ranges)')
+plt.xticks(rotation=45)
+
+plt.suptitle('Comparison of Distribution Plots')
+plt.tight_layout()
+plt.show()
