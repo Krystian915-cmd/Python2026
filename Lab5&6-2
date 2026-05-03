@@ -1,0 +1,165 @@
+Lab5&6-2 - Python
+
+
+import os
+import fnmatch
+import pickle
+import struct
+import random
+
+# ==========================================
+# Zadanie 1
+# ==========================================
+def zmien_i_listuj(sciezka):
+    try:
+        os.chdir(sciezka)
+        print(f"Obecny katalog: {os.getcwd()}")
+        print("Zawartość:", os.listdir('.'))
+    except FileNotFoundError:
+        print("Błąd: Nie znaleziono wskazanej ścieżki.")
+
+# ==========================================
+# Zadanie 2
+# ==========================================
+def interaktywna_zmiana():
+    while True:
+        decyzja = input("Czy mam zmienić katalog? (yes): ").lower()
+        if decyzja == 'yes':
+            nowa_sciezka = input("Podaj pełną ścieżkę do katalogu: ")
+            zmien_i_listuj(nowa_sciezka)
+            break
+        else:
+            print("Musisz wpisać 'yes', aby kontynuować.")
+
+# ==========================================
+# Zadanie 3
+# ==========================================
+def zadanie_3():
+    # Przygotowanie folderu i plików (doc)
+    if not os.path.exists('Dokument'):
+        os.makedirs('Dokument')
+    
+    for i in range(1, 4):
+        open(f'Dokument/Lab{i}.doc', 'w').close()
+
+    # a) Wyświetlenie wszystkich plików
+    print("Wszystkie pliki w Dokument:", os.listdir('Dokument'))
+    
+    # b) Tylko *.doc
+    pliki_doc = [f for f in os.listdir('Dokument') if fnmatch.fnmatch(f, '*.doc')]
+    print("Tylko pliki .doc:", pliki_doc)
+
+# ==========================================
+# Zadanie 4
+# ==========================================
+def zadanie_4():
+    katalogi = ['StudentDoc', 'StudentObrazy']
+    for k in katalogi:
+        if not os.path.exists(k):
+            os.makedirs(k)
+    
+    # Tworzenie plików
+    open('StudentDoc/notatka1.txt', 'w').write("Tekst testowy 1")
+    open('StudentDoc/notatka2.txt', 'w').write("Tekst testowy 2")
+    open('StudentObrazy/foto1.jpg', 'w').close()
+    open('StudentObrazy/foto2.jpg', 'w').close()
+
+    for k in katalogi:
+        print(f"\nZawartość {k}:")
+        for plik in os.listdir(k):
+            sciezka_pliku = os.path.join(k, plik)
+            rozmiar = os.path.getsize(sciezka_pliku)
+            print(f"- {plik} (Rozmiar: {rozmiar} bajtów)")
+
+# ==========================================
+# Zadanie 5
+# ==========================================
+def zadanie_5():
+    nazwa_pocz = "FolderDoZmiany"
+    nazwa_konc = "NowyFolderSuper"
+    if not os.path.exists(nazwa_pocz):
+        os.makedirs(nazwa_pocz)
+    
+    os.rename(nazwa_pocz, nazwa_konc)
+    print(f"Zmieniono nazwę z {nazwa_pocz} na {nazwa_konc}")
+
+# ==========================================
+# Zadanie 6
+# ==========================================
+def zadanie_6():
+    l1, l2, l3 = [1, 2, 3], ['a', 'b', 'c'], [True, False]
+    filename = 'zestaw_list.data'
+    
+    # Zapis
+    with open(filename, 'wb') as f:
+        pickle.dump((l1, l2, l3), f)
+    
+    # Usuwanie z pamięci
+    del l1, l2, l3
+    
+    # Odczyt
+    with open(filename, 'rb') as f:
+        wczytane = pickle.load(f)
+    print("Wczytane listy:", wczytane)
+
+# ==========================================
+# Zadanie 7
+# ==========================================
+def zadanie_7():
+    liczba = 123456789
+    # 'q' oznacza long long (8 bajtów), 'i' to standardowy int (4 bajty)
+    # Dla tak dużej liczby 'i' wystarczy, ale użyjemy 'q' dla pewności
+    spakowane = struct.pack('q', liczba)
+    print(f"Spakowane binarne: {spakowane}")
+    
+    rozpakowane = struct.unpack('q', spakowane)
+    print(f"Rozpakowana liczba: {rozpakowane[0]}")
+
+# ==========================================
+# Zadanie 9
+# ==========================================
+def zadanie_9():
+    katalog = "DaneTekstowe"
+    if not os.path.exists(katalog):
+        os.makedirs(katalog)
+    
+    pliki = ["Tekst1ID_ABC.txt", "Tekst2ID_405.txt", "Tekst3ID_607.txt", "Tekst4ID_ABC.txt", "Tekst5ID_DEF.txt"]
+    tresc = "Python jest super. To jest przykładowe zdanie numer jeden. Każdy plik ma ten sam tekst."
+    
+    for p in pliki:
+        with open(os.path.join(katalog, p), 'w', encoding='utf-8') as f:
+            f.write(tresc)
+
+    def analiza_podstawowa(folder):
+        nazwy = os.listdir(folder)
+        print("Wszystkie pliki:", nazwy)
+        
+        for n in nazwy:
+            # Sprawdzanie czy kończy się na 'ABC' (przed rozszerzeniem)
+            if n.split('.')[0].endswith('ABC'):
+                with open(os.path.join(folder, n), 'r', encoding='utf-8') as f:
+                    slowa = f.read().split()
+                    dlugie_slowa = [s for s in slowa if len(s) >= 3]
+                    print(f"Plik {n} ma {len(dlugie_slowa)} słów >= 3 litery.")
+        return nazwy
+
+    def analiza_rozszerzona(folder):
+        pliki = analiza_podstawowa(folder)
+        z_zerem = [p for p in pliki if '0' in p]
+        print(f"Liczba plików z '0' w nazwie: {len(z_zerem)}")
+        
+        for p in pliki:
+            if '0' not in p:
+                with open(os.path.join(folder, p), 'r', encoding='utf-8') as f:
+                    count = len(f.read().split())
+                    print(f"Plik {p} (bez zera) ma {count} słów.")
+
+    analiza_rozszerzona(katalog)
+
+# Wywołania testowe (odkomentuj wybrane):
+# zadanie_3()
+# zadanie_4()
+# zadanie_5()
+# zadanie_6()
+# zadanie_7()
+# zadanie_9()
