@@ -1,0 +1,70 @@
+Lab 4 - Python
+
+import random
+import operator
+import functools
+import itertools
+from sys import getsizeof
+from datetime import datetime
+
+# --- Zadanie 8 (Generator wielokrotności) ---
+def gen_czworki(n):
+    wartosc = 4
+    for _ in range(n):
+        yield wartosc
+        wartosc *= 4
+
+g = gen_czworki(3)
+print("Zadanie 8 (Generator):", next(g), next(g), next(g))
+
+# --- Zadanie 9 (Generator losowy) ---
+def gen_losowe_parzyste(n):
+    for _ in range(n):
+        yield random.randrange(0, 100000001, 2)
+
+g_los = gen_losowe_parzyste(1000)
+print("Zadanie 9 (Pierwsza losowa):", next(g_los))
+
+# --- Zadanie 9b (Fibonacci) ---
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+n_fib = 10
+print(f"Zadanie 9b ({n_fib}-ty element):", list(fibonacci(n_fib + 1))[-1])
+
+# --- Zadanie 10 (Porównanie wydajności) ---
+dane = [random.randint(1, 100) for _ in range(1000000)]
+
+# Wariant A: Imperatywnie
+t0 = datetime.now()
+p_imp, np_imp = [], []
+for x in dane:
+    if x % 2 == 0: p_imp.append(x)
+    else: np_imp.append(x)
+t1 = datetime.now()
+print(f"Imperatywnie - Czas: {t1-t0}, RAM: {getsizeof(p_imp)}")
+
+# Wariant D: Generator
+t0 = datetime.now()
+gen_parz = (x for x in dane if x % 2 == 0)
+t1 = datetime.now()
+print(f"Generator - Czas: {t1-t0}, RAM: {getsizeof(gen_parz)}")
+
+# --- Zadanie 11 (MapReduce / Dziel i rządź) ---
+jezyki = ['python', 'java', 'C++', 'C#', 'Ruby', 'JavaScript']
+list_prog = [random.choice(jezyki) for _ in range(10000)]
+
+def licz_jezyki(dane):
+    # Mapowanie na krotki (klucz, 1)
+    mapowane = list(map(lambda x: (x, 1), dane))
+    
+    # Redukcja/Agregacja
+    wynik = {}
+    for jezyk, licznik in mapowane:
+        wynik[jezyk] = wynik.get(jezyk, 0) + licznik
+    return wynik
+
+print("Zadanie 11 (Zliczanie):", licz_jezyki(list_prog))
