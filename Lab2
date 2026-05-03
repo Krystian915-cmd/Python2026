@@ -1,0 +1,110 @@
+Lab2 Python
+
+import math
+import random
+
+# --- Zadanie 1 ---
+set_gene1 = set(['SLC19A2', 'ATP7B', 'ERBB3', 'FGFR4', 'ABCC3','GALNT14', 'ERCC1', 'LJS19A2', 'AKM7B', 'ELLB34', 'FULR4', 'ANGC3', 'WELNT14', 'EOO1', 'SAC19A22', 'AAAP7B', 'ERB3', 'FGR4', 'ACC3', 'GASNT14', 'ERSS4'])
+set_gene2 = set(['SLC19A3', 'ATP7B', 'ERBB3', 'FGFR4', 'ABCC3','GALNT14', 'ERCC1', 'LJS19A2', 'AKM7B', 'ELLB32', 'FULR421', 'ANGC3', 'WELNT14', 'EOO11', 'SAC19A2', 'AAAP7B', 'ERB3', 'FGR4', 'ACC3', 'GASNT14', 'ERSS4'])
+set_gene3 = set(['SLC19A3', 'ATP7B1', 'ERBB32', 'FGFR4', 'ABCC3','GALNT14', 'ERCC11', 'LJS19A2', 'AKM7B', 'ELLB34', 'FULR4', 'ANGC3', 'WELNT15', 'EOO1', 'SAC19A22', 'AAP7B', 'ERBB3', 'FGR4', 'ACC4', 'GASNT14', 'ERSS4'])
+
+print("1a:", set_gene1 & set_gene2 & set_gene3)
+print("1b:", (set_gene1 & set_gene2) | (set_gene1 & set_gene3) | (set_gene2 & set_gene3))
+print("1c:", (set_gene1 - set_gene2 - set_gene3) | (set_gene2 - set_gene1 - set_gene3) | (set_gene3 - set_gene1 - set_gene2))
+
+# --- Zadanie 2 ---
+lista_gene1 = ['SLC19A2', 'ATP7B', 'ERBB3', 'FGFR14', 'ABCC3','GALNT14', 'ERCC1', 'LJS19A2', 'AKM7B', 'ELLB34', 'FULR4', 'ANGC3', 'WELNT14', 'EOO1', 'SAC19A22', 'FGFR4', 'ERB3', 'FGR4', 'FGFR4', 'GASNT14', 'ERSS4']
+if 'FGFR4' in lista_gene1:
+    print("FGFR4 index:", lista_gene1.index('FGFR4'))
+if 'FGERA4' in lista_gene1:
+    print("FGERA4 index:", lista_gene1.index('FGERA4'))
+
+# --- Zadanie 3 ---
+tekst = "Emma to dziennikarka. Emma pisze teksty. Emma analizuje dane. To jest fragment tekstu o Emmie."
+print("Emma count:", tekst.count("Emma"))
+print(tekst.upper())
+print(tekst.split())
+print("Zdan:", tekst.count("."))
+
+# --- Zadanie 4 ---
+liczba = int(input("Podaj liczbe: "))
+if liczba % 2 == 0:
+    print("Parzysta")
+else:
+    print("Nieparzysta")
+
+# --- Zadanie 5 ---
+punkty = float(input("Podaj punkty (0-15): "))
+procent = (punkty / 15) * 100
+if procent >= 91:
+    print("Ocena 5.0")
+elif procent >= 81:
+    print("Ocena 4.5")
+elif procent >= 71:
+    print("Ocena 4.0")
+elif procent >= 61:
+    print("Ocena 3.5")
+elif procent >= 50:
+    print("Ocena 3.0")
+else:
+    print("Ocena 2.0")
+
+# --- Zadanie 6 ---
+m = int(input("Podaj m: "))
+suma = 0
+for i in range(1, m + 1):
+    suma += 1/i
+print("Suma ciagu:", suma)
+
+# --- Zadanie 7 ---
+i = 1
+while i <= 10:
+    print(f"Pierwiastek z {i}:", math.sqrt(i))
+    i += 1
+
+# --- Zadanie 8 ---
+a = float(input("a: "))
+b = float(input("b: "))
+c = float(input("c: "))
+delta = b**2 - 4*a*c
+if delta > 0:
+    print("x1, x2:", (-b - math.sqrt(delta))/(2*a), (-b + math.sqrt(delta))/(2*a))
+elif delta == 0:
+    print("x:", -b / (2*a))
+else:
+    print("Brak pierwiastkow")
+
+# --- Zadanie 9 ---
+wyniki = []
+for n in range(1, 1001):
+    if all(int(d) % 2 == 0 for d in str(n)):
+        wyniki.append(str(n))
+print(",".join(wyniki))
+
+# --- Zadanie 10 ---
+while True:
+    x = int(input("Podaj x: "))
+    y = int(input("Podaj y: "))
+    if x == 0 or y == 0:
+        break
+    print("Iloczyn:", x * y)
+
+# --- Zadanie 11 ---
+hasla = ("sekret1", "python2")
+wpisane = input("Haslo: ")
+if wpisane in hasla:
+    print("Twoje Imie i Nazwisko")
+
+# --- Zadanie 12 ---
+losowe = [random.randint(1, 100) for _ in range(100)]
+parzyste = sorted([n for n in losowe if n % 2 == 0])
+print("Parzyste posortowane:", parzyste)
+
+# --- Zadanie 13 ---
+print("Twoje Imie" if input("Podaj haslo ponownie: ") in hasla else "Blad hasla")
+
+# --- Zadanie 14 ---
+def iloraz_trzech(a, b, c):
+    return a / b / c if a % 2 == 0 and b % 2 == 0 and c % 2 == 0 else "To nie sa liczby parzyste"
+
+print("Wynik funkcji:", iloraz_trzech(24, 4, 2))
