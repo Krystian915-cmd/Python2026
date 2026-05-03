@@ -1,0 +1,83 @@
+Lab3 - Python
+
+import functools
+import operator
+
+# --- Task 1 ---
+moje_imie_lista = ['A', 'D', 'R', 'I', 'A', 'N']
+polaczone = functools.reduce(lambda x, y: x + y, moje_imie_lista)
+print("Zadanie 1:", polaczone)
+
+# --- Task 2 ---
+dane = "Jan Kowalski"
+rozdziel_wyrazy = lambda s: s.split()
+rozdziel_litery = lambda s: list(s)
+wyrazy = rozdziel_wyrazy(dane)
+litery = list(map(rozdziel_litery, wyrazy))
+print("Zadanie 2 - wyrazy:", wyrazy)
+print("Zadanie 2 - litery:", litery)
+
+# --- Task 3 ---
+szukaj = lambda wyraz, litera: litera in wyraz
+print("Zadanie 3:", szukaj("programowanie", "g"))
+
+# --- Task 4 ---
+loginy = []
+hasla = []
+while True:
+    wejscie = input("Podaj login (lub STOP): ")
+    if wejscie == "STOP": break
+    loginy.append(wejscie)
+    hasla.append(input("Podaj haslo: "))
+
+baza_uzytkownikow = {}
+for i, login in enumerate(loginy):
+    baza_uzytkownikow[login] = hasla[i]
+print("Zadanie 4:", baza_uzytkownikow)
+
+# --- Task 5 ---
+# Zakladamy, ze funkcje sa w module stars.py
+# Tutaj definicja uproszczona do wyswietlenia liter E, L
+poziom = lambda n: print("*" * n)
+pion = lambda n: [print("*") for _ in range(n)]
+
+print("Zadanie 5 - Litera E:")
+poziom(5); pion(1); poziom(4); pion(1); poziom(5)
+print("Zadanie 5 - Litera L:")
+pion(4); poziom(5)
+
+# --- Task 6 ---
+# Obliczanie symbolu Newtona: n! / (k! * (n-k)!)
+silnia = lambda n: functools.reduce(operator.mul, range(1, n + 1), 1)
+newton = lambda n, k: silnia(n) // (silnia(k) * silnia(n - k))
+
+n_val = int(input("Podaj n: "))
+k_val = int(input("Podaj k: "))
+print("Zadanie 6 (Symbol Newtona):", newton(n_val, k_val))
+
+# --- Task 7 ---
+liczby_100 = range(1, 101)
+parzyste = list(filter(lambda x: x % 2 == 0, liczby_100))
+print("Zadanie 7:", ", ".join(map(str, parzyste)))
+
+# --- Task 8 ---
+iloczyn_100 = functools.reduce(operator.mul, range(1, 101))
+print("Zadanie 8 (Iloczyn 1-100):", iloczyn_100)
+
+# --- Task 9 ---
+wynik_9 = list(filter(lambda x: x % 7 == 0 and x % 5 != 0, range(2000, 3201)))
+print("Zadanie 9:", wynik_9)
+
+# --- Task 10 ---
+# To samo co zadanie 9, ale z uzyciem lambda w filter (juz uzyte powyzej)
+wynik_10 = list(filter(lambda n: n % 7 == 0 and n % 5 != 0, range(2000, 3201)))
+print("Zadanie 10:", wynik_10)
+
+# --- Task 11 ---
+poziom_pro = lambda n: "*" * n
+pion_pro = lambda n: "*\n" * n
+rysuj_e = lambda size: f"{poziom_pro(size)}\n{pion_pro(1)}{poziom_pro(size-1)}\n{pion_pro(1)}{poziom_pro(size)}"
+rysuj_l = lambda size: f"{pion_pro(size)}{poziom_pro(size)}"
+
+wybor = input("Wybierz E lub L: ").upper()
+print(rysuj_e(5) if wybor == "E" else rysuj_l(5) if wybor == "L" else "Blad")
