@@ -1,0 +1,124 @@
+Lab7 - Python
+
+import math
+import random
+from tkinter import *
+from tkinter.messagebox import showerror, showinfo
+
+# =============================================================================
+# ZADANIE 1: Kalkulator z obsługą błędów i Radiobuttonami
+# =============================================================================
+
+def oblicz_kalkulator():
+    try:
+        x = float(e1.get())
+        y = float(e2.get())
+        op = var_op.get()
+
+        if op == 1:
+            wynik = x + y
+        elif op == 2:
+            wynik = x - y
+        elif op == 3:
+            wynik = x * y
+        elif op == 4:
+            if y == 0:
+                raise ZeroDivisionError("Dzielenie przez zero!")
+            wynik = x / y
+        else:
+            showerror("Błąd", "Wybierz działanie!")
+            return
+
+        showinfo("Wynik", f"Wynik: {wynik}")
+    except ValueError:
+        showerror("Błąd", "Wpisz poprawne liczby!")
+    except ZeroDivisionError as e:
+        showerror("Błąd matematyczny", str(e))
+
+# =============================================================================
+# ZADANIE 2: Kalkulator raty kredytu z kolorami emocji
+# =============================================================================
+
+def oblicz_rate():
+    try:
+        K = float(ent_k.get())  # Kwota
+        n = int(ent_n.get())    # Liczba miesięcy
+        p = 5.0                 # Stopa 5%
+        q = 1 + p/100
+        
+        # Wzór: rata = (K * q^n * (1-q)) / (1 - q^n)
+        rata = (K * (q**n) * (1-q)) / (1 - (q**n))
+        rata = round(rata, 2)
+        
+        if rata < 500:
+            kolor = "green"  # Ulga
+        elif rata < 1500:
+            kolor = "orange" # Niepokój
+        else:
+            kolor = "red"    # Przerażenie
+            
+        lbl_rata.config(text=f"Rata: {rata} zł", fg=kolor)
+    except:
+        showerror("Błąd", "Wprowadź poprawne dane kredytowe!")
+
+# =============================================================================
+# ZADANIE 3: Ankieta świąteczna (Checkbuttony)
+# =============================================================================
+
+def wyslij_ankiete():
+    prezenty = []
+    if c1.get(): prezenty.append("AGD")
+    if c2.get(): prezenty.append("Kosmetyki")
+    if c3.get(): prezenty.append("Odzież")
+    
+    wynik = ", ".join(prezenty) if prezenty else "brak"
+    showinfo("Ankieta", f"Wybrane prezenty: {wynik}")
+
+# =============================================================================
+# GŁÓWNE OKNO PROGRAMU
+# =============================================================================
+
+root = Tk()
+root.title("Laboratorium GUI - Wszystkie Zadania")
+root.geometry("500x700")
+
+# --- UI Zadanie 1 ---
+Label(root, text="--- ZADANIE 1: KALKULATOR ---", font=("Arial", 10, "bold")).pack(pady=5)
+f1 = Frame(root)
+f1.pack()
+Label(f1, text="x:").grid(row=0, column=0)
+e1 = Entry(f1, width=10)
+e1.grid(row=0, column=1)
+Label(f1, text="y:").grid(row=1, column=0)
+e2 = Entry(f1, width=10)
+e2.grid(row=1, column=1)
+
+var_op = IntVar()
+Radiobutton(root, text="+", variable=var_op, value=1).pack()
+Radiobutton(root, text="-", variable=var_op, value=2).pack()
+Radiobutton(root, text="*", variable=var_op, value=3).pack()
+Radiobutton(root, text="/", variable=var_op, value=4).pack()
+Button(root, text="Oblicz", command=oblicz_kalkulator).pack()
+
+# --- UI Zadanie 2 ---
+Label(root, text="\n--- ZADANIE 2: KREDYT ---", font=("Arial", 10, "bold")).pack(pady=5)
+Label(root, text="Kwota kredytu:").pack()
+ent_k = Entry(root)
+ent_k.pack()
+Label(root, text="Liczba miesięcy:").pack()
+ent_n = Entry(root)
+ent_n.pack()
+Button(root, text="Oblicz ratę", command=oblicz_rate).pack()
+lbl_rata = Label(root, text="Rata: 0 zł", font=("Arial", 12, "bold"))
+lbl_rata.pack()
+
+# --- UI Zadanie 3 ---
+Label(root, text="\n--- ZADANIE 3: ANKIETA ---", font=("Arial", 10, "bold")).pack(pady=5)
+Label(root, text="Co kupujesz na prezent?").pack()
+c1, c2, c3 = IntVar(), IntVar(), IntVar()
+Checkbutton(root, text="AGD", variable=c1).pack()
+Checkbutton(root, text="Kosmetyki", variable=c2).pack()
+Checkbutton(root, text="Odzież", variable=c3).pack()
+Button(root, text="Wyślij", command=wyslij_ankiete).pack(pady=10)
+
+root.mainloop()
