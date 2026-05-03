@@ -1,0 +1,75 @@
+Lab1 - Python 
+
+print(0 > 1)
+print(0 <= 1)
+print(0 >= 1)
+print(1 == 0)
+print(1 == 1)
+print(1 != 0)
+print(1 != 1)
+
+x = float(input("Podaj x: "))
+y = float(input("Podaj y: "))
+print("Wynik 2x + 5y:", 2 * x + 5 * y)
+
+imie = input("Podaj imię: ")
+nazwisko = input("Podaj nazwisko: ")
+wiek = input("Podaj wiek: ")
+kierunek = input("Podaj kierunek: ")
+print("Jestem", imie, nazwisko, "mam", wiek, "lat studiuję", kierunek)
+
+suma_duza = 1 + 2 + 10 + 20000001 + 4 + 347586970885
+print("Czy równe?", suma_duza == 321784560456434534646)
+
+liczba1 = int(input("Liczba 1: "))
+liczba2 = int(input("Liczba 2: "))
+suma_liczb = liczba1 + liczba2
+if suma_liczb % 2 == 0:
+    print("Suma jest parzysta")
+else:
+    print("Suma jest nieparzysta")
+
+a = float(input("Liczba A: "))
+b = float(input("Liczba B: "))
+print("Suma:", a + b)
+print("Roznica:", a - b)
+print("Iloczyn:", a * b)
+if b != 0:
+    print("Iloraz:", a / b)
+print("Potega:", a ** b)
+
+zmienna_x = float(input("Podaj x do testu: "))
+print(zmienna_x > 1 and zmienna_x < 13)
+print(zmienna_x != 5 or zmienna_x < 0)
+
+imie_ank = input("Imie: ")
+nazwisko_ank = input("Nazwisko: ")
+wiek_ank = input("Wiek: ")
+odp1 = input("Czy zdrowo sie odzywiasz? ")
+odp2 = input("Czy lubisz sport? ")
+odp3 = input("Ulubiony film: ")
+odp4 = input("Gdzie mieszkasz? ")
+odp5 = input("Twoje hobby: ")
+print("Podsumowanie:", imie_ank, nazwisko_ank, wiek_ank, odp1, odp2, odp3, odp4, odp5)
+
+cv_imie = input("Imie: ")
+cv_nazwisko = input("Nazwisko: ")
+cv_wiek = input("Wiek: ")
+cv_zawod = input("Zawod: ")
+cv_miejsce = input("Miejsce urodzenia: ")
+cv_hobby = input("Hobby: ")
+print(f"Nazywam sie {cv_imie} {cv_nazwisko}. Mam {cv_wiek} lat.")
+print(f"Urodzilem sie w {cv_miejsce} i pracuje jako {cv_zawod}.")
+print(f"Moje zainteresowania to {cv_hobby}. Jestem osoba pracowita.")
+print("Szybko sie ucze i szukam nowych wyzwan zawodowych.")
+
+litera = input("Podaj spolgloske: ")
+samogloski = "aeiouy"
+for s in samogloski:
+    print(litera + s)
+
+sprawdz_imie = input("Podaj imie: ")
+if sprawdz_imie == "Janusz" or sprawdz_imie == "Grazyna":
+    print("To Janusz lub Grazyna")
+else:
+    print("Inne imie")
