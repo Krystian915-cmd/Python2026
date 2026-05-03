@@ -1,0 +1,162 @@
+Lab5&6 - Python
+
+import os
+import pickle
+import re
+
+# ==========================================
+# Task 0 & Task 2 (Divisible by 7, not 5)
+# ==========================================
+def find_numbers(x: int, y: int):
+    """
+    Znajduje liczby podzielne przez 7, ale nie będące wielokrotnością 5.
+
+    Args:
+        x (int): Początek zakresu.
+        y (int): Koniec zakresu.
+
+    Returns:
+        list: Lista znalezionych liczb.
+    """
+    result = []
+    try:
+        for i in range(x, y + 1):
+            if i % 7 == 0 and i % 5 != 0:
+                result.append(str(i))
+        
+        # Wyświetlanie w jednej linii po przecinku
+        print(",".join(result))
+        
+        # Zapis do pliku .pkl (Task 2)
+        with open('result_task2.pkl', 'wb') as f:
+            pickle.dump(result, f)
+            
+    except Exception as e:
+        print(f"Błąd: {e}")
+    
+    return result
+
+# ==========================================
+# Task 1 (Password Validator)
+# ==========================================
+def check_passwords(*args):
+    """
+    Sprawdza ważność haseł na podstawie kryteriów.
+
+    Args:
+        *args: Dowolna liczba haseł do sprawdzenia.
+
+    Returns:
+        list: Lista haseł spełniających kryteria.
+    """
+    valid_passwords = []
+    for pwd in args:
+        if not (4 <= len(pwd) <= 8):
+            continue
+        if not re.search("[a-z]", pwd):
+            continue
+        if not re.search("[0-9]", pwd):
+            continue
+        if not re.search("[A-Z]", pwd):
+            continue
+        
+        valid_passwords.append(pwd)
+
+    # Zapis do pliku .txt
+    with open('valid_passwords.txt', 'w') as f:
+        f.write("\n".join(valid_passwords))
+    
+    return valid_passwords
+
+# ==========================================
+# Task 3 (Power Function)
+# ==========================================
+def power_sequence(*args):
+    """
+    Oblicza x^x dla każdego podanego argumentu.
+
+    Args:
+        *args: Ciąg liczb.
+
+    Returns:
+        list: Wyniki potęgowania lub komunikat o błędzie.
+    """
+    if len(args) > 100:
+        print("Error: Too many arguments (max 100).")
+        return None
+    
+    results = [n**n for n in args]
+    print(results)
+    return results
+
+# ==========================================
+# Task 4 (Dynamic Variables)
+# ==========================================
+def dynamic_power(**kwargs):
+    """
+    Oblicza potęgi dla zmiennych o nazwach x1, x2... xn.
+
+    Args:
+        **kwargs: Argumenty kluczowe (np. x1=2, x2=3).
+    """
+    try:
+        if len(kwargs) > 100:
+            raise ValueError("Za dużo parametrów!")
+            
+        results = {}
+        for key, value in kwargs.items():
+            if key.startswith('x'):
+                results[key] = value**value
+        
+        print(results)
+    except Exception as e:
+        print(f"Błąd: {e}")
+
+# ==========================================
+# Task 5 (Files & Folders)
+# ==========================================
+def manage_files():
+    """
+    Generuje dane testowe i analizuje pliki w folderze.
+    """
+    folder = "TestDataLab"
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    
+    # Generowanie plików
+    filenames = ["Text1ID_ABC.txt", "Text2ID_405.txt", "Text3ID_607.txt", "Text4ID_ABC5.txt", "Text5ID_DEF.txt"]
+    content = "To jest przykladowe zdanie. Drugie zdanie musi byc tutaj. Trzecie zdanie rowniez sie pojawi. I czwarte zdanie. I piate zdanie."
+    
+    for name in filenames:
+        with open(os.path.join(folder, name), 'w') as f:
+            f.write(content)
+
+    # Analiza plików (args/kwargs)
+    print("\nPliki w folderze:")
+    files = os.listdir(folder)
+    for f_name in files:
+        print(f_name)
+        if 'ABC' in f_name:
+            with open(os.path.join(folder, f_name), 'r') as f:
+                words = f.read().split()
+                long_words = [w for w in words if len(re.sub(r'[^\w]', '', w)) > 3]
+                print(f" -> Slow z >3 literami w {f_name}: {len(long_words)}")
+
+# ==========================================
+# Wywołania testowe
+# ==========================================
+if __name__ == "__main__":
+    print("--- Task 0/2 ---")
+    find_numbers(1000, 1100)
+    
+    print("\n--- Task 1 ---")
+    print("Poprawne hasła:", check_passwords("Abc1", "test", "Haslo123", "Zxcv9"))
+    
+    print("\n--- Task 3 ---")
+    power_sequence(1, 2, 3)
+    
+    print("\n--- Task 4 ---")
+    dynamic_power(x1=2, x2=4, x3=5)
+    
+    print("\n--- Task 5 ---")
+    manage_files()
