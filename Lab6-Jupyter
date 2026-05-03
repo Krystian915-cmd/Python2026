@@ -1,0 +1,112 @@
+import math
+import pandas as pd
+import pickle
+import os
+import re
+
+# =============================================================================
+# ZADANIE 1: Kalkulator (dzielenie, pierwiastkowanie) + Assert
+# =============================================================================
+def kalkulator(operacja, a, b=None):
+    """Wykonuje dzielenie lub pierwiastkowanie z obsługą wyjątków."""
+    try:
+        if operacja == 'dzielenie':
+            return a / b
+        elif operacja == 'pierwiastek':
+            if a < 0:
+                raise ValueError("Nie można pierwiastkować liczby ujemnej")
+            return math.sqrt(a)
+    except ZeroDivisionError:
+        return "Błąd: Dzielenie przez zero"
+    except ValueError as e:
+        return f"Błąd wartości: {e}"
+    except TypeError:
+        return "Błąd: Niepoprawny typ danych"
+
+# Testy asercji (sprawdzenie poprawności)
+assert kalkulator('dzielenie', 10, 2) == 5.0
+assert kalkulator('pierwiastek', 25) == 5.0
+assert kalkulator('dzielenie', 5, 0) == "Błąd: Dzielenie przez zero"
+
+# =============================================================================
+# ZADANIE 2: Analiza movies.csv (Najdroższy film BW) + FileNotFoundError
+# =============================================================================
+def analiza_filmow_bw(sciezka):
+    """Znajduje najdroższy film czarno-biały i zapisuje do pickle."""
+    try:
+        if not os.path.exists(sciezka):
+            raise FileNotFoundError(f"Plik {sciezka} nie istnieje")
+            
+        df = pd.read_csv(sciezka)
+        # Filtrowanie filmów czarno-białych (uwzględnienie spacji w danych)
+        bw_movies = df[df['color'].str.contains('Black and White', na=False, case=False)]
+        
+        if bw_movies.empty:
+            return "Brak filmów czarno-białych w zestawieniu."
+
+        # Szukanie filmu z najwyższym budżetem
+        top_movie = bw_movies.loc[bw_movies['budget'].idxmax()]
+        tytul = top_movie['movie_title'].strip()
+        
+        # Zapis do pickle
+        with open('najdrozszy_bw.pkl', 'wb') as f:
+            pickle.dump(tytul, f)
+            
+        return tytul
+    except FileNotFoundError as e:
+        return f"Wyjątek: {e}"
+    except Exception as e:
+        return f"Inny błąd: {e}"
+
+# =============================================================================
+# ZADANIE 3: Pierwiastki równania kwadratowego z typu String + Assert
+# =============================================================================
+def licz(fun):
+    """Oblicza pierwiastki równania kwadratowego z ciągu znaków."""
+    try:
+        # Uproszczone wyciąganie współczynników dla x^2+4x-21
+        # Zakładamy format ax^2+bx+c (współczynniki przy x^2 i x)
+        # Do pełnego parsowania najlepiej użyć biblioteki sympy
+        import sympy as sp
+        x = sp.symbols('x')
+        # Zamiana ^ na ** dla standardu Pythona
+        expr_str = fun.replace('^', '**')
+        expr = sp.sympify(expr_str)
+        rozwiazania = sp.solve(expr, x)
+        
+        return [float(r) for r in rozwiazania]
+    except Exception as e:
+        return f"Błąd obliczeń: {e}"
+
+# Test asercji dla przykładu z zadania: x^2+4x-21
+wynik_rownania = licz('x^2+4*x-21')
+assert 3.0 in wynik_rownania and -7.0 in wynik_rownania
+
+# =============================================================================
+# ZADANIE 4: Funkcja wielu zmiennych (Liczby/Lista/Słownik) + Assert
+# =============================================================================
+def suma_strukturalna(*args):
+    """Sumuje liczby przekazane jako argumenty, lista lub słownik."""
+    try:
+        total = 0
+        if not args:
+            raise ValueError("Brak argumentów")
+            
+        for arg in args:
+            if isinstance(arg, (int, float)):
+                total += arg
+            elif isinstance(arg, list):
+                total += sum(filter(lambda x: isinstance(x, (int, float)), arg))
+            elif isinstance(arg, dict):
+                total += sum(filter(lambda x: isinstance(x, (int, float)), arg.values()))
+        return total
+    except Exception as e:
+        return f"Błąd: {e}"
+
+# Testy asercji
+assert suma_strukturalna(1, 2, 3, 4) == 10
+assert suma_strukturalna([10, 20]) == 30
+assert suma_strukturalna({'a': 5, 'b': 15}) == 20
+
+# Wyświetlenie potwierdzenia
+print("Wszystkie zadania zostały przetworzone. Asercje przeszły pomyślnie.")
